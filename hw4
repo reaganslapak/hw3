@@ -1,0 +1,124 @@
+Title         : Homework 4
+Author        : Reagan Slapak
+Email         : rslapak@umail.iu.edu
+
+~ MathDefs
+\newcommand{\jacobi}[2]{\ensuremath{\left(\frac{#1}{#2}\right)}}
+~
+
+
+[TITLE]
+# Counting
+An urn contains 15 red, distinctly labeled, balls, and 10 white, distinctly labeled balls. 5 balls are picked from the urn.\
+a. How many different samples are possible? **nCr(25,5) = 53130** \
+b. How many samples contain only red balls? **nCr(15,5) = 3003**\
+c. How many samples contain 3 red balls and 2 white balls?
+**nCr(15,3)*nCr(10,2) = 20475**\
+
+# Conditional Probability and Bayes Theorem
+Given two urns: Urn A has 10 gold coins and 5 silver coins while Urn B has 2 gold coins and 8 silver coins.
+Alice first randomly picks an urn then randomly pick a coin from the urn. It turns out that the coin is golden. She then puts the coin back into the urn and then randomly draws another coin and it is still a golden one.
+What is the probability that it was Urn A being picked in the first place?
+~Equation 
+P(B|G) = (P(G|B)P(B))/((P(G|B)P(B))+(P(G|B)P(B)))
+~
+~ Equation
+P(B|G) = ((2/3)(1/2))/(((2/3)(1/2))+((1/5)(1/2)) = (1/3)/(13/30) = 10/13
+~
+
+# Random Variables
+Randomly throwing 100 balls into 20 bins, how many bins (on average) will end up empty?
+
+Assume that n balls are thrown randomly and independently into k bins. ((k-1)/k)^n. Multiply by k
+for the expected number of empty bins. The equation will look like ((20-1)/20)^100 * 20 = 0.1184105844.
+The expected number of empty bins is less than one because it's very unlikely to leave an empty bin when you throw 100 balls into 20 bins.
+
+# Modulo Arithmetic and Primes
+a. Compute the following numbers
+  - 2135 mod 23: **19**
+    - -2135 mod 23: **4**
+      - 2135 mod (-23): **-4**
+        - -2135 mod (-23): **-19**
+	b. Write a Haskell function that print the sum of the first `n` primes
+	``` haskell
+	sumOfPrimes :: Int -> Integer
+	sumOfPrimes n = undefined
+	```
+	For example,
+	``` {padding-left:1ex; padding-right:1ex; padding-top:.75ex; padding-bottom:.25ex; background-color:black; color:white; font-size:14pt }
+	Prelude λ> sumOfPrimes 4
+	17
+	Prelude λ> sumOfPrimes 12
+	197
+	```
+
+primes :: [Int]
+
+
+primes = primes' [2..]
+
+primes' :: [Int] -> [Int]
+
+
+primes' [] = []
+  
+  
+primes' (p:ps) = p:(primes' [p' | p' <- ps, not (p' `isMultiple` p)])
+
+a `isMultiple` b = (a `mod` b) == 0
+
+main = print (sum (primes' [2..100000]))
+
+
+# Bonus Problem 1 (5 points)
+**You have to submit your haskell source code in a separate `.hs` file.**\
+\
+a. The Caeser cipher we discussed in class can only handle capital letters. Can you write a generalized Caeser in Haskell that is able to appropriately deal with upper and lower case letters, numbers, plus six basic punctuation marks including `, . ' " ! ?`.   
+
+You have to assign new numbers to the new lower case letters and punctuation.
+
+b. Given a ciphertext encoded by your generalized Caeser cipher, how would you crack the ciphertext without knowing the key? Explain your idea and implement it in Haskell.
+
+The most frequent letter in a cipher text is 'E'. For example, if letter 'X' is equal to
+'E', then 23 = 4. (23 + 7) mod 26 =  30 - 4 = 26. E = 4. Therefore the key = 7.
+
+
+module Caesar (caesar, uncaesar) where 
+
+ 
+import Data.Char
+
+ 
+caesar, uncaesar :: (Integral a) => a -> String -> String
+
+caesar k = map f
+
+    where f c = case generalCategory c of
+    
+              LowercaseLetter -> addChar 'a' k c
+              
+              UppercaseLetter -> addChar 'A' k c
+              
+              _               -> c
+              
+uncaesar k = caesar (-k)
+
+ 
+addChar :: (Integral a) => Char -> a -> Char -> Char
+
+
+addChar b o c = chr $ fromIntegral (b' + (c' - b' + o) `mod` 26)
+
+    where b' = fromIntegral $ ord b
+    
+          c' = fromIntegral $ ord c
+
+
+EXAMPLE: *Main> caesar 1 "hal"
+
+"ibm"
+
+*Main> unCaesar 1 "ibm"
+
+"hal"
+[reference manual]: http://research.microsoft.com/en-us/um/people/daan/madoko/doc/reference.html  "Madoko reference manual"

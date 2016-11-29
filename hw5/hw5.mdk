@@ -1,0 +1,180 @@
+Title         : Homework 5
+Author        : Reagan Slapak
+Email         : rslapak@umail.iu.edu
+
+~ MathDefs
+\newcommand{\jacobi}[2]{\ensuremath{\left(\frac{#1}{#2}\right)}}
+~
+
+
+[TITLE]
+\
+\
+
+For every problem below, **you must show detailed derivation steps.**
+
+# Groups
+a. **[0.25 point]** What is $\mathbb{Z}^+_3$ and $\mathbb{Z}^+_5$? What is $\mathbb{Z}^\times_3$ and $\mathbb{Z}^\times_5$?
+  
+  $\mathbb{Z}^+_3$:
+  
+  (0+0) mod 3 = 0; (1+0) mod 3 = 1; (2+0) mod 3 = 2
+  
+  (0+1) mod 3 = 1; (1+1) mod 3 = 2; (2+1) mod 3 = 0
+  
+  (0+2) mod 3 = 2; (1+2) mod 3 = 0; (2+1) mod 3 = 1
+  
+  $\mathbb{Z}^+_5$:
+  
+  (0+0) mod 5 = 0; (1+0) mod 5 = 1; (2+0) mod 5 = 2; (3+0) mod 5 = 3; (4+0) mod 5 = 4;
+  
+  (0+1) mod 5 = 1; (1+1) mod 5 = 2; (2+1) mod 5 = 3; (3+1) mod 5 = 4; (4+1) mod 5 = 0;
+  
+  (0+2) mod 5 = 2; (1+2) mod 5 = 3; (2+2) mod 5 = 4; (3+2) mod 5 = 0; (4+2) mod 5 = 1;
+  
+  (0+3) mod 5 = 3; (1+3) mod 5 = 4; (2+3) mod 5 = 5; (3+3) mod 5 = 1; (4+3) mod 5 = 2;
+  
+  (0+4) mod 5 = 4; (1+4) mod 5 = 0; (2+4) mod 5 = 1; (3+4) mod 5 = 2; (4+4) mod 5 = 3;
+  
+  $\mathbb{Z}^\times_3$:
+  
+  (1x1) mod 3 = 1; (2x1) mod 3 = 2
+  
+  (1x2) mod 3 = 2; (2x2) mod 3 = 1
+  
+  $\mathbb{Z}^\times_5$:
+  
+  (1x1) mod 5 = 1; (2x1) mod 5 = 2; (3x1) mod 5 = 3; (4x1) mod 5 = 4
+  
+  (1x2) mod 5 = 2; (2x2) mod 5 = 4; (3x2) mod 5 = 1; (4x2) mod 5 = 3
+  
+  (1x3) mod 5 = 3; (2x3) mod 5 = 1; (3x3) mod 5 = 4; (4x3) mod 5 = 2
+  
+  (1x4) mod 5 = 4; (2x4) mod 5 = 3; (3x4) mod 5 = 2; (4x4) mod 5 = 1
+*  **[0.25 point]** Abbreviating $\mathbb{Z}^+_n$ by $\mathbb{Z}_n$. Define $\mathbb{Z}_p\times\mathbb{Z}_q$ to be the set $\{(g,h) | g\in\mathbb{Z}_p, h\in\mathbb{Z}_q\}$. Enumerate all the elements of $\mathbb{Z}_3\times\mathbb{Z}_5$?
+
+*  **[1 point]** For every $(g_1, h_1), (g_2, h_2)\in\mathbb{Z}_3\times\mathbb{Z}_5$, define "$+$" as 
+~ math
+(g_1,h_1)+(g_2,h_2) = (g_1+g2 \mathrm{mod} 3, h1+h2 \mathrm{mod} 5).
+~
+Prove that $\mathbb{Z}_3\times\mathbb{Z}_5$ is a group under the definition of "$+$".
+
+*  **[1 points]** Find a definition of "$\times$" over $\mathbb{Z}_3\times\mathbb{Z}_5$ such that $\mathbb{Z}_3\times\mathbb{Z}_5$ is a group respect to your definition of "$\times$", and prove it.
+
+# Extended Euclidean and Greatest Common Divisors
+a. **[1.5 points]** For every pair of $a$ and $b$ below, find integers $x$ and $y$ such that 
+~ math
+ax+by=\mathrm{gcd}(a,b).
+~
+\
+  (1) $a=12, b=35$.\
+  gcd 12 35 = 1
+  
+  ax + y = 1  <== set x = 0; y = 1
+  
+  
+  
+  (2) $a=21, b=28$.\
+  gcd 21 28 = 7
+  
+  ax + by = 7 <== set x = 0; y = .25
+  
+  
+   
+*  **[1 point]** Write a Haskell function `extended_euclidean` *on your own* to automates your mechanical work above.
+
+  extended_euclidean :: Int -> Int -> (Int, Int, Int)
+  
+  extended_euclidean a 1 = (0, 0, 1)
+  
+  extended_euclidean a 0 = (1, 0, a)
+
+  extended_euclidean a b = let (c, d, f) = extended_euclidean (b `mod` a) a
+           in (c, f - (b `div` a) * d, d)
+           
+           otherwise = let (c, d, f) = extended_euclidean b a
+                       in (c, d, f)
+
+# Chinese Remainder Theorem
+a. **[2 points]** For each one of the below, If such an integer $x$ exists, find the minimal  positive $x$ that satisfies each one of the following; otherwise, explain why such $x$ cannot be found.\
+  (1)
+~ math
+\left\{\begin{array}{l}
+  2x = 5 \mod 17\\
+  3x + 1 = 9 \mod 13.
+\end{array}\right.
+~
+\
+  (2)
+  ~ math
+\left\{\begin{array}{l}
+  x = 5 \mod 15\\
+  3x + 1 = 9 \mod 25.
+\end{array}\right.
+~
+
+* **[0.5 point]** Write a Haskell function on your own that solves any equation systems of the following form for input integer arguments $a, b, c, d$.
+~ math
+\left\{\begin{array}{l}
+  x = a \mod b\\
+  x = c \mod d.
+\end{array}\right.
+~ 
+
+# Euler's Theorem and Chinese Remainder Theorem
+
+a. **[0.5 point]** Let $\phi$ be the Euler's totient function. Calculate $\phi(36)$.
+
+  $\phi$(36) = $\phi$(4 · 9) = $\phi$(4)$\phi$(9) = 2 · 6 = 12.
+
+* **[2 points]** Without using a calculator, compute $2016^{11} \mod 24$.
+
+    $2016^{11}$ = $2016^{6}$ * $2016^{5}$
+    
+    $2016^{11}$ = (($2016^{6}$ mod 24)($2016^{5}$ mod 24)) mod 24
+    
+    $2016^{11}$ = ((0)(0)) mod 24
+    
+    $2016^{11}$ = 0
+
+
+# (Optional) Bonus problems (Step details are required to earn points.)
+a. [2 points] Write a Haskell function to solve the following system of modulo equations for $x$, where $a,b,c,m,n,k$ are input parameters.
+~ math
+\left\{\begin{array}{l}
+  x = a \mod m\\
+  x = b \mod n\\
+  x = c \mod k.
+\end{array}\right.
+~
+``` haskell
+         crt3 :: (Int, Int) -> (Int, Int) -> (Int, Int) -> Int
+         crt3 = undefined
+``` 
+
+* [4 points] Write a Haskell function to solve the following system of modulo equations for $x$, where for all positive integer $i$, $a_i, m_i$ are positive integer inputs.
+~ math
+  x = a_i \mod m_i   \qquad \mbox{ for all } i
+~
+``` haskell
+         crt_n :: [(Int, Int)] -> Int
+         crt_n = undefined
+``` 
+
+* [4 points] Calculate with pen and paper $(24^{1000}\times25^{1001}) \mod 2016$.
+
+  $24^{5}$ mod 2016 = 1440
+  
+  1000/5 = 200
+  
+  (200)(1440) = 288000
+  
+  $25^{7}$ mod 2016 = 1033
+  
+  1001/7 = 143
+  
+  (143)(1033) = 147719
+  
+  (288000)(147719) = 42543072000
+  
+  42543072000 mod 2016 = 576
